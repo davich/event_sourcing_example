@@ -18,7 +18,7 @@ class CommandHandler
   def aggregate(command)
     case command
     when Commands::StartShift, Commands::EndShift
-      Shift
+      Aggregates::Shift
     else
       raise UnknownCommand
     end

@@ -4,7 +4,8 @@ require_relative 'projection'
 require_relative 'command_handler'
 require_relative 'commands'
 require_relative 'events'
-require_relative 'shift'
+require_relative 'aggregates/shift'
+require_relative 'projections/shift'
 
 class Application
   def run
