@@ -3,6 +3,7 @@ class Projector
     @event_store = event_store
     @projection = projection
   end
+  SLEEP_TIME = 0.1
 
   def run
     @current_event = 0
@@ -12,7 +13,7 @@ class Projector
           @projection.handle_event(event)
           @current_event += 1
         end
-        sleep 1
+        sleep SLEEP_TIME
       end
     end
   end

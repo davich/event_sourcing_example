@@ -12,18 +12,19 @@ describe Application do
       @command_handler.handle("unkonwn")
     end.to raise_error(CommandHandler::UnknownCommand)
   end
+  let(:sleep_time) { Projector::SLEEP_TIME * 2 }
 
   it 'starts and ends a shift' do
     start_time = Time.now.iso8601
     @command_handler.handle(Commands::StartShift.new(aggregate_id: '1234', start_time: start_time, employee_id: 4))
-    sleep 1
+    sleep sleep_time
     expect(@projection.shift_by_id('1234')).to eq(
       Projections::Shift.new(start_time: start_time, employee_id: 4, aggregate_id: '1234')
     )
 
     end_time = Time.now.iso8601
     @command_handler.handle(Commands::EndShift.new(aggregate_id: '1234', end_time: end_time))
-    sleep 1
+    sleep sleep_time
     expect(@projection.shift_by_id('1234')).to eq(
       Projections::Shift.new(start_time: start_time, employee_id: 4, end_time: end_time, aggregate_id: '1234')
     )
@@ -33,7 +34,7 @@ describe Application do
     start_time = Time.now.iso8601
     @command_handler.handle(Commands::StartShift.new(aggregate_id: '1234', start_time: start_time, employee_id: 4))
     @command_handler.handle(Commands::StartShift.new(aggregate_id: '5678', start_time: start_time, employee_id: 5))
-    sleep 1
+    sleep sleep_time
     expect(@projection.shifts).to eq([
       Projections::Shift.new(start_time: start_time, employee_id: 4, aggregate_id: '1234'),
       Projections::Shift.new(start_time: start_time, employee_id: 5, aggregate_id: '5678'),
