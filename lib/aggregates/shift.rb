@@ -12,10 +12,10 @@ module Aggregates
     def handle(command)
       case command
       when Commands::StartShift
-        Events::ShiftStarted.new(command.employee_id, command.start_time)
+        [Events::ShiftStarted.new(command.employee_id, command.start_time)]
       when Commands::EndShift
         raise ShiftNotStarted unless @start_time && @employee_id
-        Events::ShiftEnded.new(command.end_time)
+        [Events::ShiftEnded.new(command.end_time)]
       else
         raise NotImplementedError
       end

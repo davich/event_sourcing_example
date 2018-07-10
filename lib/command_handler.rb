@@ -5,12 +5,14 @@ class CommandHandler
   end
 
   def handle(command)
-    event =
+    events =
       aggregate(command)
         .hydrate(@event_store.get_for_aggregate_id(command.aggregate_id))
         .handle(command)
 
-    @event_store.put(event: event, aggregate_id: command.aggregate_id)
+    events.each do |event|
+      @event_store.put(event: event, aggregate_id: command.aggregate_id)
+    end
   end
 
   private

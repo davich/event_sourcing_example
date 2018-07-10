@@ -12,6 +12,8 @@ class EventStore
   end
 
   def get_for_aggregate_id(id)
-    @events.select { |event| event[:aggregate_id] == id }.map { |x| x[:event] }
+    @events
+      .select { |event| event[:aggregate_id] == id }
+      .map { |x| x[:event] }
   end
 end
